@@ -34,6 +34,8 @@
     -webkit-text-stroke-color: white;
 }
 
+
+
 .progress__container {
     width: 887px;
     height: 2px;
@@ -43,13 +45,31 @@
     border-radius: 5px;
 }
 
+.timer{
+    color: #fff;
+    margin-left: 20px;
+}
+
 .progress {
-    width: 0px;
+    width: 0%;
     height: 0px;
     border: 1px solid #7A66CC;
     border-radius: 5px;
+    transition: all 0.5s linear;
+    cursor: pointer;
+
 }
 
-.btn{
+
+#timeUnder{
+    color: #fff;
+}
+
+
+.btn {
     cursor: pointer;
+}
+
+#music {
+    display: none;
 }

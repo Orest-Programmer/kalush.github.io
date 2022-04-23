@@ -1,75 +1,70 @@
-const player = document.querySelector('.player'),
-playBtn = document.querySelector('.play'),
-audio = document.querySelector('.audio'),
-title = document.querySelector('.name_music'),
-imgPlay = document.querySelector('.img__src'),
-before = document.querySelector('.before'),
-after = document.querySelector('.after'),
-progressContainer = document.querySelector('.progress__container'),
-progress = document.querySelector('.progress')
+const player = document.querySelector(".player"),
+musicName = document.querySelector(".name_music"),
+musicSrc = document.querySelector("#music"),
+playPauseBtn = document.querySelector(".play"),
+progressBar = document.querySelector(".progress"),
+progressContainer = document.querySelector(".progress__container"),
+imgPlayBtn = document.querySelector(".img__src");
 
-function loadSong(song){
-    title.innerHTML = song
-    audio.src = `audio/${song}.mp3`
-    
-}
-
-loadSong('Kalush Orchestra - Stefania')
-
-function playSong(){
-    player.classList.add('play')
-    audio.play()
-    imgPlay.src = './img/pause.png'
-
-}
-
-function pauseSong(){
-    player.classList.remove('play')
-    audio.pause()
-    imgPlay.src = './img/play.png'
-
-}
-
-playBtn.addEventListener('click', () =>{
-    const isPlaying = player.classList.contains('play')
-    if(isPlaying){
-        pauseSong()
-    }else{
-        playSong()
-    }
+window.addEventListener("load", ()=>{
+    loadMusic(musicName);
 })
 
-function updateProgress(e){    
-    const {duration, currentTime} = e.srcElement
-    const progressPercent =( currentTime / duration ) *100
-    progress.style.width = `${progressPercent}%`
-    console.log(currentTime/0.100)
+function loadMusic(song){
+    song = musicName.innerHTML;
+    musicSrc.src = `audio/${song}.mp3`
 }
 
-audio.addEventListener('timeupdate', updateProgress)
-
-function setProgress(e){
-   const width =this.clientWidth
-   const clickX =e.offsetX
-   const duration = audio.duration
-   
-   audio.currentTime = (clickX / width) * duration
- 
+function playMusic(){
+    player.classList.add("paused");
+    musicSrc.play();
+    imgPlayBtn.src = "img/pause.png";
 }
 
-progressContainer.addEventListener('click', setProgress)
+function pausedMusic(){
+    player.classList.remove("paused");
+    musicSrc.pause();
+    imgPlayBtn.src = "img/play.png";
+}
 
-// function formatSecondsAsTime(secs, format) {
-//     var hr  = Math.floor(secs / 3600);
-//     var min = Math.floor((secs - (hr * 3600))/60);
-//     var sec = Math.floor(secs - (hr * 3600) -  (min * 60));
-  
-//     if (min < 10){ 
-//       min = "0" + min; 
-//     }
-//     if (sec < 10){ 
-//       sec  = "0" + sec;
-//     }
-  
-//     return min + ':' + sec;
-//   }
+
+playPauseBtn.addEventListener("click", ()=>{
+    const isMusicPaused = player.classList.contains("paused");
+    isMusicPaused ? pausedMusic() : playMusic();
+})
+
+musicSrc.addEventListener("timeupdate", (e)=>{
+    const currentTime = e.target.currentTime;
+    const duration = e.target.duration;
+    let progressWidth = (currentTime / duration) * 100;
+    progressBar.style.width =`${progressWidth}%`
+    let musicCurrentTime = document.querySelector(".current"),
+    musicDuration = document.querySelector(".duration");
+    musicSrc.addEventListener("loadeddata", ()=>{
+        
+
+        let audioDuration = musicSrc.duration;
+        let totalMin = Math.floor(audioDuration / 60);
+        let totalSec = Math.floor(audioDuration % 60);
+        if(totalSec < 10){
+            totalSec = `0${totalSec}`;
+        }
+        musicDuration.innerText = `${totalMin}:${totalSec}`;
+
+    });
+
+    let currentMin = Math.floor(currentTime / 60);
+    let currentSec = Math.floor(currentTime % 60);
+    if(currentSec < 10){
+        currentSec = `0${currentSec}`;
+    }
+    musicCurrentTime.innerText = `${currentMin}:${currentSec}`;
+});
+
+progressContainer.addEventListener("click", (e)=>{
+    let progressWidthval = progressContainer.clientWidth;
+    let clickedOffSet = e.offsetX;
+    let songDuration = musicSrc.duration;
+
+    musicSrc.currentTime = (clickedOffSet / progressWidthval) * songDuration;
+});

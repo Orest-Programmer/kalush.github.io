@@ -71,16 +71,26 @@
 
             <div class="row">
                 <div class="col-12 d-flex align-items-center player">
-                    <div class="btn play"><img class="img__src" src="img/play.png" alt="btn"></div>
-                    <audio class="audio" src=""
-                        ontimeupdate="document.getElementById('tracktime').innerHTML = Math.floor(this.currentTime) + ' / ' + Math.floor(this.duration);"></audio>
-                    <div class="progress__container">
-                        <div class="progress"></div>
-                    </div>
+                    <div class="btn play"><img class="img__src" src="img/play.png" alt="btn" id="play"></div>
 
-                    <span id="tracktime">0 / 0</span>
+                    <div class="progress__container d-flex" id="progress__container">
+                        <div class="progress" id="progress">
+
+                        </div>
+
+                    </div>
+                    <div class="timer">
+                        <span class="current">0:00</span>
+                        <span> - </span>
+                        <span class="duration">3:40</span>
+                    </div>
+                    <audio id="music" src="" controls></audio>
+
+
+
 
                 </div>
+
             </div>
 
         </div>
